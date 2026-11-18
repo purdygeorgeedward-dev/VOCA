@@ -67,7 +67,7 @@ def test_new_contributors_are_told_to_sign_before_their_first_pull_request():
     signing_issue = "https://github.com/debpalash/VoiceStudio/issues/2586"
     contributing = (_REPO / ".github" / "CONTRIBUTING.md").read_text(encoding="utf-8")
     template = (_REPO / ".github" / "pull_request_template.md").read_text(encoding="utf-8")
-    readme = (_REPO / "README.md").read_text(encoding="utf-8")
+    readme = (_REPO / "VOICESTUDIO_README.md").read_text(encoding="utf-8")
     assert "Before your first pull request" in contributing
     assert contributing.count(signing_issue) >= 2
     assert signing_issue in template

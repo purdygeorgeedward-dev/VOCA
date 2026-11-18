@@ -49,6 +49,13 @@ val contentReportsUrl = (providers.environmentVariable("VOICESTUDIO_CONTENT_REPO
 require(Regex("""https://[A-Za-z0-9.-]+(?::\d+)?(?:/[A-Za-z0-9._~/-]*)?""").matches(contentReportsUrl)) {
     "VOICESTUDIO_CONTENT_REPORTS_URL must be an https URL, got $contentReportsUrl"
 }
+val supportedAbis = listOf("arm64-v8a", "x86_64")
+// Release APKs are split per ABI (arm64 phones vs x86_64 emulators), roughly halving native code per
+// download. AGP rejects ndk.abiFilters next to ABI splits, and bundles split on their own, so splits
+// apply only to a release assemble run without a bundle task; run bundleRelease separately.
+val splitApksByAbi = gradle.startParameter.taskNames.let { tasks ->
+    tasks.any { it.contains("assemble", true) && it.contains("Release", true) } && tasks.none { it.contains("bundle", true) }
+}
 android {
     namespace = "com.voicestudio.mobile"
     compileSdk = 36
@@ -57,7 +64,7 @@ android {
         // Store identity (voicestudio.sh); the Kotlin namespace stays com.voicestudio.mobile.
         applicationId = "sh.voicestudio.mobile"
         minSdk = 29
-        ndk { abiFilters += listOf("arm64-v8a", "x86_64") }
+        if (!splitApksByAbi) ndk { abiFilters += supportedAbis }
         targetSdk = 36
         versionCode = appVersionCode
         versionName = appVersion
@@ -72,6 +79,19 @@ android {
             keyPassword = providers.environmentVariable("VOICESTUDIO_ANDROID_KEY_PASSWORD").get()
         }
         buildTypes.getByName("release").signingConfig = signingConfigs.getByName("upload")
+    }
+    buildTypes.getByName("release") {
+        // R8 removes unused code and resources; JNI keep rules come from core/local's consumer-rules.pro.
+        isMinifyEnabled = true
+        isShrinkResources = true
+        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    }
+    // One APK per ABI for direct downloads (Play bundles split by ABI on their own).
+    splits.abi {
+        isEnable = splitApksByAbi
+        reset()
+        include(*supportedAbis.toTypedArray())
+        isUniversalApk = false
     }
     buildFeatures { compose = true; buildConfig = true }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
@@ -135,6 +155,8 @@ dependencies {
     implementation(files(rootDir.resolve("../native/android/build/downloads/sherpa.aar")).builtBy(":core:local:fetchRuntimes"))
     implementation(project(":features"))
     implementation(libs.activity)
+    // Installs baseline-prof.txt ahead of time on sideloaded APKs, not only Play installs.
+    implementation(libs.profileinstaller)
     implementation(libs.lifecycle)
     implementation(libs.viewmodel)
     implementation(libs.navigation)

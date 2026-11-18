@@ -76,7 +76,7 @@ def _check(root: Path) -> list[str]:
         return [f"`{inv_path.relative_to(root)}` is missing"]
     inv = yaml.safe_load(inv_path.read_text(encoding="utf-8")) or {}
 
-    readme = (root / "README.md").read_text(encoding="utf-8")
+    readme = (root / "VOICESTUDIO_README.md").read_text(encoding="utf-8")
     # Keep the complete inventory in a linked catalog when the README is compact.
     catalog = inv.get("catalog")
     if catalog:

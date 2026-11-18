@@ -36,8 +36,11 @@ the macOS build path.
 `local.properties`, build outputs and local IDE state are ignored. Gradle 8.13,
 AGP 8.12.0, Kotlin 2.2.21 and direct dependencies are pinned in the wrapper and
 `gradle/libs.versions.toml`. The wrapper was generated using installed Gradle
-9.8.1. Compilation runs inside Gradle to avoid Kotlin daemon files outside
-sandbox writable directories; parallel workers are capped for this shared host.
+9.8.1. Gradle runs in parallel with the build cache on. Release builds are
+shrunk with R8 (`app/proguard-rules.pro`, plus JNI rules in
+`core/local/consumer-rules.pro`) and ship `app/src/main/baseline-prof.txt`.
+`assembleRelease` writes one APK per ABI (`app-arm64-v8a-release*.apk` for
+phones); run `bundleRelease` as a separate Gradle invocation.
 The version name/code are derived at configuration time from root `package.json`.
 
 The adaptive launcher icon (including its themed monochrome layer) and launch
