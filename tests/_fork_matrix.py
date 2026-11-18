@@ -1,7 +1,7 @@
 """VOCA fork: some CI matrices are `${{ fromJSON(<upstream> && '<all>' || '<fork>') }}`.
 
-Upstream VoiceStudio gets every leg; the fork drops Apple Silicon macOS runners,
-which never start there. Tests check the upstream legs, so this returns them.
+Upstream VoiceStudio gets every leg; the fork drops macOS runners,
+which never start (Apple Silicon) or often time out (Intel) there. Tests check the upstream legs, so this returns them.
 """
 import json
 import re
