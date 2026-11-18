@@ -20,8 +20,10 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  # VOCA fork: upstream VoiceStudio's release, store and maintainer automation;
+  # it needs upstream secrets and accounts, so every job here runs only there.
   description:
-    if: github.ref == 'refs/heads/main'
+    if: ${{ github.repository == 'debpalash/VoiceStudio' && (github.ref == 'refs/heads/main') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

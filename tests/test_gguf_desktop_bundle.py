@@ -50,7 +50,9 @@ def test_build_workflow_is_reusable_and_uploads_every_runtime_file():
     # A matrix `include` that matches no combination re-adds it, which would
     # defeat the desktop exclude; runners come from a lookup instead.
     assert "include" not in job["strategy"]["matrix"]
-    for platform in job["strategy"]["matrix"]["platform"]:
+    from _fork_matrix import upstream
+
+    for platform in upstream(job["strategy"]["matrix"]["platform"]):
         assert f'"{platform}":' in job["runs-on"]
 
 

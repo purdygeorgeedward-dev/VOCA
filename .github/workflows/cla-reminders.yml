@@ -12,7 +12,10 @@ permissions:
   statuses: read
 
 jobs:
+  # VOCA fork: upstream VoiceStudio's release, store and maintainer automation;
+  # it needs upstream secrets and accounts, so every job here runs only there.
   reminders:
+    if: github.repository == 'debpalash/VoiceStudio'
     runs-on: ubuntu-24.04
     concurrency:
       group: cla-reminders

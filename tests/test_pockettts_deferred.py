@@ -101,7 +101,8 @@ def test_ci_verifies_intel_mac_as_the_documented_remote_only_host():
     workflow = (Path(__file__).resolve().parents[1] / ".github/workflows/ci.yml").read_text(
         "utf-8"
     )
-    assert "label: macOS Intel\n            backend_supported: false" in workflow
+    # VOCA fork: the smoke matrix is a fromJSON expression (see tests/_fork_matrix.py).
+    assert '"label":"macOS Intel","backend_supported":false' in workflow
     assert "name: Verify the documented Intel Mac contract" in workflow
     # What must hold is that the pockettts extra is installed ONLY on the
     # backend-supported legs — not how the sync is invoked. Pinning the exact

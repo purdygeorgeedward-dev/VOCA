@@ -195,7 +195,8 @@ jobs:
 
   ios:
     needs: changes
-    if: ${{ !cancelled() && needs.changes.outputs.runtime != 'false' }}
+    # VOCA fork: Apple Silicon macOS runners (macos-26) never start here; upstream only.
+    if: ${{ github.repository == 'debpalash/VoiceStudio' && !cancelled() && needs.changes.outputs.runtime != 'false' }}
     # Same SDK as the TestFlight upload, so App Store toolchain breaks show up here first.
     runs-on: macos-26
     # Cold simulator/device compilation can exhaust an hour after tests pass, and a

@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 
 import yaml
+from _fork_matrix import upstream
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -30,7 +31,7 @@ def _runs(job: dict) -> str:
 
 
 def _legs(job: dict) -> dict[str, dict]:
-    return {leg["platform"]: leg for leg in job["strategy"]["matrix"]["include"]}
+    return {leg["platform"]: leg for leg in upstream(job["strategy"]["matrix"]["include"])}
 
 
 def test_release_smoke_uses_the_release_runners_and_targets():
@@ -121,6 +122,6 @@ def test_each_desktop_os_runs_the_cli_bundle_smoke_exactly_once():
     smoke = "node electron/tests/cli-bundle-smoke.mjs"
     desktop = next(s for s in CI["jobs"]["electron-ui"]["steps"] if smoke in s.get("run", ""))
     assert "runner.os == 'Windows'" in desktop["if"]
-    assert {leg["label"] for leg in CI["jobs"]["electron-ui"]["strategy"]["matrix"]["include"]} == {
+    assert {leg["label"] for leg in upstream(CI["jobs"]["electron-ui"]["strategy"]["matrix"]["include"])} == {
         "macOS", "Windows", "Linux"}
     assert {leg["label"] for leg in _legs(JOB).values()} == {"macOS", "Linux"}
