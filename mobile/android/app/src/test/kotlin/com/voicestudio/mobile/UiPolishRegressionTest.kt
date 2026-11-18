@@ -31,7 +31,7 @@ class UiPolishRegressionTest {
             override fun read(host:String):Secret?=null
             override fun write(host:String,secret:Secret?)=Unit
         })
-        store.update {Preferences(consent=false)}
+        store.update {Preferences(consent=false,allowMobileModels=false)}
         val vm=StudioViewModel(app,store)
         try {
             compose.setContent {StudioApp(vm)}
@@ -84,7 +84,7 @@ class UiPolishRegressionTest {
             override fun read(host:String):Secret?=null
             override fun write(host:String,secret:Secret?)=Unit
         })
-        store.update {Preferences(consent=false)}
+        store.update {Preferences(consent=false,allowMobileModels=false)}
         val vm=StudioViewModel(app,store)
         try {
             compose.setContent {androidx.compose.runtime.CompositionLocalProvider(LocalL10n provides L10n.load(app,"en")) {
