@@ -390,7 +390,8 @@ jobs:
   # here they are fetched for the test with its explicit test-licence flag.
   ios-inference:
     needs: changes
-    if: ${{ !cancelled() && needs.changes.outputs.runtime != 'false' }}
+    # VOCA fork: macOS Intel runners time out without starting here; upstream only.
+    if: ${{ github.repository == 'debpalash/VoiceStudio' && !cancelled() && needs.changes.outputs.runtime != 'false' }}
     # Standard Intel runners have 14 GB RAM; standard ARM runners have 7 GB.
     # The verified OmniVoice pack requires 8 GB, including inference headroom.
     runs-on: macos-15-intel
