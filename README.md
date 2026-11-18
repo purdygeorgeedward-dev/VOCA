@@ -1,5 +1,5 @@
 <div align="center">
-  <h1><sub><img src="docs/logo.png" alt="" width="36" height="36" /></sub> VOCA</h1>
+  <h1><sub><img src="docs/voca-icon.webp" alt="" width="36" height="36" /></sub> VOCA</h1>
   <p>
     <a href="https://trendshift.io/repositories/28176?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-28176" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/28176" alt="Trendshift badge showing where VoiceStudio ranks among trending repositories" width="220" height="48" /></a>
   </p>
