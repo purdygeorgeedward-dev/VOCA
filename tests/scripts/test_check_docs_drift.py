@@ -75,7 +75,7 @@ def _make_root(tmp_path: Path, *, inventory: str = _INVENTORY, readme: str = _RE
     (root / "docs" / "install").mkdir(parents=True)
     (root / "backend" / "services").mkdir(parents=True)
     (root / "docs" / "features.yaml").write_text(inventory, encoding="utf-8")
-    (root / "README.md").write_text(readme, encoding="utf-8")
+    (root / "VOICESTUDIO_README.md").write_text(readme, encoding="utf-8")
     (root / "backend" / "services" / "tts_backend.py").write_text(tts, encoding="utf-8")
     (root / "backend" / "services" / "asr_backend.py").write_text(asr, encoding="utf-8")
     (root / "docs" / "engines" / "cosyvoice.md").write_text("# CosyVoice\n", encoding="utf-8")
@@ -179,5 +179,5 @@ def test_linked_catalog_is_checked_and_must_remain_discoverable(drift_module, tm
     catalog.write_text(_README.replace('Voice Cloning', 'Removed'), encoding='utf-8')
     assert drift_module.main([], root=root) == 1
     catalog.write_text(_README, encoding='utf-8')
-    (root / 'README.md').write_text('No catalog link', encoding='utf-8')
+    (root / 'VOICESTUDIO_README.md').write_text('No catalog link', encoding='utf-8')
     assert drift_module.main([], root=root) == 1
