@@ -89,7 +89,10 @@ def test_pull_request_changes_that_affect_the_result_rerun_the_check():
     # New commits, (un)applying `cla-override`, and editing `Supersedes #N`
     # all change who must sign, so each must refresh the CLA status.
     assert {"opened", "synchronize", "reopened", "closed", "labeled", "unlabeled", "edited"} <= types
-    assert workflow["jobs"]["cla"]["if"].startswith("github.event_name == 'pull_request_target' ||")
+    condition = workflow["jobs"]["cla"]["if"]
+    # VOCA fork: the upstream CLA runs only in upstream VoiceStudio.
+    assert condition.startswith("github.repository == 'debpalash/VoiceStudio' && (")
+    assert "( github.event_name == 'pull_request_target' ||" in condition
 
 
 def test_published_agreements_are_never_edited():

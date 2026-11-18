@@ -227,7 +227,7 @@ def _scope_main(tmp_path, monkeypatch, event_name, event, api, argv=()):
     path.write_text(json.dumps(event))
     output = tmp_path / "output"
     for key, value in {"GITHUB_EVENT_PATH": str(path), "GITHUB_EVENT_NAME": event_name,
-                       "GITHUB_REPOSITORY": "owner/repo", "GITHUB_OUTPUT": str(output)}.items():
+                       "GITHUB_REPOSITORY": scope.UPSTREAM_REPOSITORY, "GITHUB_OUTPUT": str(output)}.items():
         monkeypatch.setenv(key, value)
     calls = []
 
@@ -309,3 +309,9 @@ def test_the_required_check_names_the_cla_hold():
     env = _skipped_gate_env(gate) | {"CLA_HOLD": "held"}
     result = subprocess.run(["bash", "-eu", "-c", gate["steps"][0]["run"]], env=env, capture_output=True, text=True)
     assert result.returncode == 0 and "CLA not signed yet" in result.stdout
+
+
+def test_forks_never_hold_runtime_ci_for_the_upstream_cla():
+    """VOCA fork: the CLA belongs to upstream VoiceStudio, so a fork never holds CI."""
+    event = {"number": 1, "pull_request": {"user": ALICE}}
+    assert not scope.cla_hold("pull_request", event, "purdygeorgeedward-dev/VOCA")

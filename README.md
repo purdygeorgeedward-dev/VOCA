@@ -72,6 +72,12 @@ come from upstream VoiceStudio and are kept in sync. Their documentation is in
 [docs/](docs/), and VoiceStudio's original README is preserved at
 [VOICESTUDIO_README.md](VOICESTUDIO_README.md).
 
+## Contributing
+
+Pull requests to VOCA don't need VoiceStudio's contributor agreement (CLA) or
+its commit-identity policy. Those checks only run in upstream VoiceStudio. If
+you send a change upstream, their rules apply there.
+
 ## Credits and license
 
 VOCA is built on [VoiceStudio](https://github.com/debpalash/VoiceStudio) by

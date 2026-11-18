@@ -27,6 +27,8 @@ concurrency:
 jobs:
   identities:
     name: Commit identities
+    # VOCA fork: upstream VoiceStudio's identity policy runs only there.
+    if: github.repository == 'debpalash/VoiceStudio'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

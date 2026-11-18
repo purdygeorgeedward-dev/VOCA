@@ -97,6 +97,9 @@ def _exempt(user: dict) -> bool:
     return user.get("type") != "User" or not isinstance(user_id, int) or user_id in MAINTAINER_IDS | BOT_IDS
 
 
+UPSTREAM_REPOSITORY = "debpalash/VoiceStudio"
+
+
 def cla_held(pr: dict, signed_ids: set[int] | None) -> bool:
     """True while a person who must sign opened `pr` and has not signed.
 
@@ -117,6 +120,8 @@ def _gh_json(endpoint: str):
 
 
 def cla_hold(event_name: str, event: dict, repo: str) -> bool:
+    if repo != UPSTREAM_REPOSITORY:
+        return False  # VOCA fork: the CLA belongs to upstream VoiceStudio
     if event_name != "pull_request" or _exempt((event.get("pull_request") or {}).get("user") or {}):
         return False  # no API call for the owner, bots, pushes or the merge queue
     # Read labels live: the CLA check's re-run replays this event with its old labels.
