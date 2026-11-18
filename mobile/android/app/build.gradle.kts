@@ -79,6 +79,9 @@ android {
             keyPassword = providers.environmentVariable("VOICESTUDIO_ANDROID_KEY_PASSWORD").get()
         }
         buildTypes.getByName("release").signingConfig = signingConfigs.getByName("upload")
+    } else if (providers.environmentVariable("VOICESTUDIO_ANDROID_DEBUG_SIGN_RELEASE").orNull == "1") {
+        // Test builds only (CI artifacts): an installable release APK signed with the debug key.
+        buildTypes.getByName("release").signingConfig = signingConfigs.getByName("debug")
     }
     buildTypes.getByName("release") {
         // R8 removes unused code and resources; JNI keep rules come from core/local's consumer-rules.pro.

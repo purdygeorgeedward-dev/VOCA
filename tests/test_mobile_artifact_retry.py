@@ -7,6 +7,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 UPLOADS = (
     ("android", "android-reports", "failure() && steps.pass.outputs.hit != 'true'"),
+    ("android", "voca-android-arm64-release-test", "steps.pass.outputs.hit != 'true'"),
     ("ios", "ios-screenshots", "always() && steps.pass.outputs.hit != 'true'"),
     ("ios", "VoiceStudio-ios-unsigned", "steps.pass.outputs.hit != 'true'"),
     ("android-screenshots", "android-play-screenshots", "always()"),
