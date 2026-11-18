@@ -23,12 +23,17 @@ class BrandResourcesTest {
         }
         val adaptive=generated.resolve("mipmap-anydpi/ic_launcher.xml").readText()
         assertTrue(adaptive.contains("<monochrome"))
-        assertTrue(adaptive.contains("@color/vs_canvas"))
+        // VOCA launcher: bitmap layers rendered from docs/voca-icon.webp (scripts/render_voca_icons.py).
+        assertTrue(adaptive.contains("@color/voca_icon_background"))
+        assertTrue(adaptive.contains("@mipmap/voca_launcher_foreground"))
+        for(density in listOf("mdpi","hdpi","xhdpi","xxhdpi","xxxhdpi"))
+            for(layer in listOf("foreground","monochrome"))
+                assertTrue(root.resolve("app/src/main/res/mipmap-$density/voca_launcher_$layer.webp").isFile)
         val colors=generated.resolve("values/brand_colors.xml").readText()
         val tokens=root.resolve("../contract/tokens.json").readText()
         val rgba=Regex("\\\"dark\\\"\\s*:\\s*\\{\\s*\\\"canvas\\\"\\s*:\\s*\\\"(#[a-fA-F0-9]{8})").find(tokens)!!.groupValues[1]
         assertTrue(colors.contains("#"+rgba.substring(7)+rgba.substring(1,7)))
         assertTrue(root.resolve("app/src/main/AndroidManifest.xml").readText().contains("@mipmap/ic_launcher"))
-        assertTrue(root.resolve("app/src/main/res/values-v31/styles.xml").readText().contains("@drawable/vs_launcher_foreground"))
+        assertTrue(root.resolve("app/src/main/res/values-v31/styles.xml").readText().contains("@mipmap/voca_launcher_foreground"))
     }
 }

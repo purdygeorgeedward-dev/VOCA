@@ -63,6 +63,14 @@ object ModelDownloadJobs {
         write(context,saved.filterNot {it.model==model.id}+item)
         schedule(context,item,model.totalBytes)
     }
+    /** Applies the mobile-data setting to queued, unpaused downloads (they keep their job IDs). */
+    @Synchronized fun applyMobileData(context: Context,models: List<PhoneModel>,mobile: Boolean) {
+        val saved=read(context)
+        val changed=saved.filter {!it.paused&&it.mobile!=mobile}.map {it.copy(mobile=mobile)}
+        if(changed.isEmpty()) return
+        write(context,saved.map {item -> changed.firstOrNull {it.model==item.model} ?: item})
+        for(item in changed) models.firstOrNull {it.id==item.model}?.let {schedule(context,item,it.totalBytes)}
+    }
     private fun requiredNetwork(mobile: Boolean): NetworkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
         // Builder defaults exclude VPNs even when mobile data is allowed.
