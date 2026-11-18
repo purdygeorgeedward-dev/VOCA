@@ -67,13 +67,16 @@ def generate(repository, output):
     write('drawable/vs_launcher_monochrome.xml', vector(adaptive=True, monochrome=True))
     colors = ET.Element('resources')
     ET.SubElement(colors, 'color', {'name': 'vs_canvas'}).text = canvas
-    write('values/brand_colors.xml', colors)
     # Adaptive icons are available on every supported Android version. Older
     # Android versions ignore the monochrome child; API 33+ uses it for theming.
+    # VOCA launcher icon: bitmap layers rendered from docs/voca-icon.webp by
+    # scripts/render_voca_icons.py (committed under app/src/main/res/mipmap-*dpi).
+    ET.SubElement(colors, 'color', {'name': 'voca_icon_background'}).text = '#FF011545'
+    write('values/brand_colors.xml', colors)
     icon = ET.Element('adaptive-icon')
-    ET.SubElement(icon, 'background', android(drawable='@color/vs_canvas'))
-    ET.SubElement(icon, 'foreground', android(drawable='@drawable/vs_launcher_foreground'))
-    ET.SubElement(icon, 'monochrome', android(drawable='@drawable/vs_launcher_monochrome'))
+    ET.SubElement(icon, 'background', android(drawable='@color/voca_icon_background'))
+    ET.SubElement(icon, 'foreground', android(drawable='@mipmap/voca_launcher_foreground'))
+    ET.SubElement(icon, 'monochrome', android(drawable='@mipmap/voca_launcher_monochrome'))
     write('mipmap-anydpi/ic_launcher.xml', icon)
     for legacy in ['mipmap-anydpi-v26', 'mipmap-anydpi-v33']:
         stale = output / legacy / 'ic_launcher.xml'

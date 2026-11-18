@@ -39,7 +39,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, macos-latest, windows-latest]
+        # VOCA fork: Apple Silicon macOS runners never start here; upstream keeps every OS.
+        os: ${{ fromJSON(github.repository == 'debpalash/VoiceStudio' && '["ubuntu-22.04", "macos-latest", "windows-latest"]' || '["ubuntu-22.04", "windows-latest"]') }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0

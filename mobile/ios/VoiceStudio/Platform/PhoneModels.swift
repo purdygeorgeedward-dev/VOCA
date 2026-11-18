@@ -86,7 +86,8 @@ final class WifiState: @unchecked Sendable {
          downloadMonitorSleep: (@MainActor () async throws -> Void)? = nil) {
         suppliedDownloadTransport = downloadTransport
         self.downloadMonitorSample = downloadMonitorSample; self.downloadMonitorSleep = downloadMonitorSleep
-        allowMobileData = UserDefaults.standard.bool(forKey: "models.mobile-data")
+        // VOCA: mobile data is allowed by default; the Models toggle still turns it off.
+        allowMobileData = UserDefaults.standard.object(forKey: "models.mobile-data") as? Bool ?? true
         pendingDubs = (UserDefaults.standard.stringArray(forKey: "dub.queue") ?? []).compactMap(UUID.init(uuidString:))
         do {
             let root: URL = try {

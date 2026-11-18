@@ -82,6 +82,10 @@ class PhoneStudio(context: Context, private val scope: CoroutineScope, private v
         val observation=AutomaticDiagnostics.observeConsent()
         try {ModelDownloadJobs.enqueue(application,model,allowMobile)} catch(e:Exception) {failed(e,observation) {download(model,allowMobile)}}
     }
+    fun applyMobileData(allowed: Boolean) {
+        val observation=AutomaticDiagnostics.observeConsent()
+        try {ModelDownloadJobs.applyMobileData(application,state.value.models,allowed)} catch(e:Exception) {failed(e,observation)}
+    }
     fun pauseDownload(model: PhoneModel) {val observation=AutomaticDiagnostics.observeConsent();try {ModelDownloadJobs.pause(application,model.id)} catch(e:Exception) {failed(e,observation)}}
     fun cancelDownload(model: PhoneModel) {val observation=AutomaticDiagnostics.observeConsent();try {ModelDownloadJobs.cancel(application,model.id)} catch(e:Exception) {failed(e,observation)}}
     fun delete(model: PhoneModel) {val observation=AutomaticDiagnostics.observeConsent();scope.launch {

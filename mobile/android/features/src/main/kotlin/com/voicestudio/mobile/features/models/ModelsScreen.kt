@@ -28,6 +28,8 @@ import com.voicestudio.mobile.data.modelDownloadDescription
         ScreenTitle("mobile.local.models")
         Text(tr("mobile.local.storage_used",mapOf("size" to Formatter.formatFileSize(LocalContext.current,state.used))))
         Toggle("mobile.simple.mobile_data",preferences.allowMobileModels) {allowed -> vm.preference {it.copy(allowMobileModels=allowed)}}
+        // Downloads already waiting follow the setting, so turning on mobile data starts them.
+        LaunchedEffect(preferences.allowMobileModels,state.models) {if(state.models.isNotEmpty()) vm.phone.applyMobileData(preferences.allowMobileModels)}
         if(state.loading) InlineLoading()
         state.models.forEach {model -> ModelCard(vm,model)}
     }

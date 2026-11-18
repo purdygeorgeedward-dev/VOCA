@@ -128,9 +128,11 @@ env:
   # Resolve all GHCR coordinates per job before metadata/cache consumers.
 
 jobs:
+  # VOCA fork: upstream VoiceStudio's release, store and maintainer automation;
+  # it needs upstream secrets and accounts, so every job here runs only there.
   build-and-push:
     # Only version releases publish images; other release tags are ignored.
-    if: github.event_name != 'release' || startsWith(github.event.release.tag_name, 'v')
+    if: ${{ github.repository == 'debpalash/VoiceStudio' && (github.event_name != 'release' || startsWith(github.event.release.tag_name, 'v')) }}
     runs-on: ubuntu-22.04
     permissions:
       contents: read
@@ -299,7 +301,7 @@ jobs:
   # is ~10 GB compressed / ~25 GB unpacked.
   build-and-push-rocm:
     # Only version releases publish images; other release tags are ignored.
-    if: github.event_name != 'release' || startsWith(github.event.release.tag_name, 'v')
+    if: ${{ github.repository == 'debpalash/VoiceStudio' && (github.event_name != 'release' || startsWith(github.event.release.tag_name, 'v')) }}
     runs-on: ubuntu-22.04
     permissions:
       contents: read
@@ -466,7 +468,7 @@ jobs:
   # arm64 failure can never block or alter them.
   build-and-push-cuda-arm64:
     # Only version releases publish images; other release tags are ignored.
-    if: github.event_name != 'release' || startsWith(github.event.release.tag_name, 'v')
+    if: ${{ github.repository == 'debpalash/VoiceStudio' && (github.event_name != 'release' || startsWith(github.event.release.tag_name, 'v')) }}
     runs-on: ubuntu-24.04-arm
     permissions:
       contents: read

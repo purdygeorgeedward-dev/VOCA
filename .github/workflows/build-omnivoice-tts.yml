@@ -73,7 +73,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [linux-x86_64, linux-aarch64, windows-x86_64, darwin-arm64]
+        # VOCA fork: Apple Silicon macOS runners never start here; upstream keeps darwin-arm64.
+        platform: ${{ fromJSON(github.repository == 'debpalash/VoiceStudio' && '["linux-x86_64","linux-aarch64","windows-x86_64","darwin-arm64"]' || '["linux-x86_64","linux-aarch64","windows-x86_64"]') }}
         # The installers ship no Linux ARM64 build, so desktop calls skip it.
         exclude:
           - platform: ${{ inputs.desktop && 'linux-aarch64' || 'none' }}

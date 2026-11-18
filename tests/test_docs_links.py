@@ -20,6 +20,7 @@ _DOCS = sorted(
         *(_ROOT / "docs").rglob("*.md"),
         *(_ROOT / ".github").glob("*.md"),
         _ROOT / "README.md",
+        _ROOT / "VOICESTUDIO_README.md",
         _ROOT / "CHANGELOG.md",
         _ROOT / "SPONSORS.md",
     }
@@ -71,7 +72,7 @@ def test_scan_covers_the_repo_root_pages():
     which is how the #2903 links survived the sweep that fixed the rest.
     """
     covered = {doc.relative_to(_ROOT).as_posix() for doc in _DOCS}
-    for page in ("README.md", "CHANGELOG.md", "SPONSORS.md"):
+    for page in ("README.md", "VOICESTUDIO_README.md", "CHANGELOG.md", "SPONSORS.md"):
         assert page in covered, f"{page} is not scanned for broken links"
 
 

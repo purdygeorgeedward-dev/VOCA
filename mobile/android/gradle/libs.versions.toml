@@ -19,6 +19,7 @@ lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose", version =
 viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "2.9.4" }
 navigation = { module = "androidx.navigation:navigation-compose", version = "2.9.5" }
 core = { module = "androidx.core:core-ktx", version = "1.17.0" }
+profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version = "1.4.1" }
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }

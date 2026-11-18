@@ -151,12 +151,15 @@ jobs:
           # Shared clock and serialized builds keep codes increasing across both release workflows.
           export VOICESTUDIO_ANDROID_VERSION_CODE="$(python3 "$GITHUB_WORKSPACE/scripts/android_version_code.py")"
           test -n "$VOICESTUDIO_ANDROID_VERSION_CODE"
-          ./gradlew --no-daemon :app:assembleRelease :app:bundleRelease
+          # Separate runs: ABI-split APKs apply only to an assemble run without a bundle task.
+          ./gradlew --no-daemon :app:assembleRelease
+          ./gradlew --no-daemon :app:bundleRelease
 
       - name: Collect outputs
         run: |
           mkdir -p "$RUNNER_TEMP/out"
-          cp app/build/outputs/apk/release/*.apk "$RUNNER_TEMP/out/VoiceStudio.apk"
+          # The phone (arm64) split; x86_64 is only for emulators.
+          cp app/build/outputs/apk/release/*arm64-v8a*.apk "$RUNNER_TEMP/out/VoiceStudio.apk"
           cp app/build/outputs/bundle/release/*.aab "$RUNNER_TEMP/out/VoiceStudio.aab"
 
       - name: Measure Android APK signing

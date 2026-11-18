@@ -276,7 +276,8 @@ All tabs work without pairing once on-device models are installed (see M2); the 
   approved `hf-mirror.com` fallback. Persist exact catalogue pins, network policy
   and pause state before scheduling. Reattach active work after relaunch; paused
   and cancelled work never starts automatically. Licence withdrawal stops work.
-  Wi-Fi only unless the user allows mobile data. Store all files privately and
+  Mobile data is allowed by default (VOCA); the Models screen toggle restricts
+  downloads to Wi-Fi. Store all files privately and
   exclude them from backups; verify size/SHA-256 before making a model ready.
   Large files use bounded parallel HTTP ranges: start with two, allow up to four
   transfers across models, and reduce concurrency when measured throughput falls.

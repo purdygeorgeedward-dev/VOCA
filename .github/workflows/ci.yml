@@ -705,10 +705,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - { os: macos-15, label: macOS }
-          - { os: windows-2022, label: Windows }
-          - { os: ubuntu-24.04, label: Linux }
+        # VOCA fork: Apple Silicon macOS runners never start here, so forks drop the
+        # macos-15 leg; upstream VoiceStudio keeps every platform.
+        include: ${{ fromJSON(github.repository == 'debpalash/VoiceStudio' && '[{"os":"macos-15","label":"macOS"},{"os":"windows-2022","label":"Windows"},{"os":"ubuntu-24.04","label":"Linux"}]' || '[{"os":"windows-2022","label":"Windows"},{"os":"ubuntu-24.04","label":"Linux"}]') }}
     defaults:
       run:
         shell: bash
@@ -841,10 +840,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          # The release's runners and targets (electron-release.yml `package`).
-          - { runner: ubuntu-22.04, label: Linux, platform: linux, arch: x64, target: x86_64-unknown-linux-gnu, flags: --linux --x64 }
-          - { runner: macos-15, label: macOS, platform: darwin, arch: arm64, target: aarch64-apple-darwin, flags: --mac --arm64 }
+        # VOCA fork: Apple Silicon macOS runners never start here, so forks drop the
+        # macos-15 leg; upstream VoiceStudio keeps every platform.
+        include: ${{ fromJSON(github.repository == 'debpalash/VoiceStudio' && '[{"runner":"ubuntu-22.04","label":"Linux","platform":"linux","arch":"x64","target":"x86_64-unknown-linux-gnu","flags":"--linux --x64"},{"runner":"macos-15","label":"macOS","platform":"darwin","arch":"arm64","target":"aarch64-apple-darwin","flags":"--mac --arm64"}]' || '[{"runner":"ubuntu-22.04","label":"Linux","platform":"linux","arch":"x64","target":"x86_64-unknown-linux-gnu","flags":"--linux --x64"}]') }}
     defaults:
       run:
         shell: bash
@@ -998,19 +996,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: macos-15
-            label: macOS
-            backend_supported: true
-          - os: macos-15-intel
-            label: macOS Intel
-            backend_supported: false
-          - os: windows-2022
-            label: Windows
-            backend_supported: true
-          - os: ubuntu-22.04
-            label: Linux
-            backend_supported: true
+        # VOCA fork: Apple Silicon macOS runners never start here, so forks drop the
+        # macos-15 leg; upstream VoiceStudio keeps every platform.
+        include: ${{ fromJSON(github.repository == 'debpalash/VoiceStudio' && '[{"os":"macos-15","label":"macOS","backend_supported":true},{"os":"macos-15-intel","label":"macOS Intel","backend_supported":false},{"os":"windows-2022","label":"Windows","backend_supported":true},{"os":"ubuntu-22.04","label":"Linux","backend_supported":true}]' || '[{"os":"windows-2022","label":"Windows","backend_supported":true},{"os":"ubuntu-22.04","label":"Linux","backend_supported":true}]') }}
     runs-on: ${{ matrix.os }}
     # Priced for a COLD `uv sync`, on every platform.
     #

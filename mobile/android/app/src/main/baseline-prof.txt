@@ -1,0 +1,5 @@
+# Baseline profile: ahead-of-time compile the app's own code so cold start and
+# first screens skip the JIT. Compose and AndroidX ship their own profiles.
+# Replace with a generated profile (Macrobenchmark BaselineProfileRule) for finer rules.
+HSPLcom/voicestudio/mobile/**;->**(**)**
+Lcom/voicestudio/mobile/**;
